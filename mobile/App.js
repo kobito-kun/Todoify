@@ -1,11 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import axios from 'axios';
 
 export default function App() {
+
+  const [data, setData] = useState({});
+
+  const getData = () => {
+    axios.get("https://stockily-backend.herokuapp.com/api/symbol/AAPL").then(data => {
+      setData(data.data);
+    })
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <View>
+      <Text>{JSON.stringify(data)}</Text>
       <StatusBar style="auto" />
     </View>
   );
