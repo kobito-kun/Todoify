@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Todoify-ExpoCLI",
+    "slug": "Todoify-ExpoCLI",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Todoify-ExpoCLI"
+}
