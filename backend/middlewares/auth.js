@@ -33,7 +33,7 @@ const authenticate = async (req, res) => {
 }
 
 export const generateAccessToken = (username) => {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '10 years' });
+  return jwt.sign(username, secretToken, { expiresIn: '10 years' });
 }
 
 export default authenticate;

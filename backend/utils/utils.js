@@ -5,20 +5,14 @@ dotenv.config();
 
 const secretToken = process.env.JWT_TOKEN;
 
-export const getUsername = async (req, res) => {
+export const getUsername = (req, res) => {
   try{
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
     let toReturn;
-    
-    if(token === null) toReturn = {
-      "authenticated": false
-    };
 
     jwt.verify(token, secretToken, (err, user) => {
-      if(err) toReturn = {
-        "authenticated": false
-      };
+      if(err) return toReturn = "None";
       toReturn = user.username;
     })
 
@@ -28,4 +22,21 @@ export const getUsername = async (req, res) => {
       "authenticated": false
     }
   }
+}
+
+export const checkIfAuthenticated = (req, res) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1];
+
+  let returnThis;
+
+  if(token === null) return returnThis = false;
+  
+
+  jwt.verify(token, secretToken, (err, user) => {
+    if(err) return returnThis = false;
+    return returnThis = true;
+  })
+
+  return returnThis;
 }

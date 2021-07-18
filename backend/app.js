@@ -14,12 +14,21 @@ import userRoutes from "./routes/user.js";
 import postRoutes from './routes/post.js';
 import sectionRoutes from './routes/section.js';
 
+import Section from './models/section.models.js';
+import User from './models/user.models.js';
+import Post from './models/post.models.js';
+
 // Express Settings
 app.use(cors());
 app.use(express.json({ extended: true }))
 app.use(express.urlencoded({ extended: true }))
 
 // Routes
+app.get("/", (req, res) => {
+  Section.find({}, (err, result) => {
+    res.json(result);
+  })
+})
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 app.use("/section", sectionRoutes);

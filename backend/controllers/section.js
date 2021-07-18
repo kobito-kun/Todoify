@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getUsername } from '../utils/utils.js';
+import { getUsername, checkIfAuthenticated } from '../utils/utils.js';
 import Section from '../models/section.models.js';
 
 const router = express.Router();
@@ -28,14 +28,18 @@ export const getSectionRoute = async (req, res) => {
 
 export const createSectionRoute = async (req, res) => {
   try{
-    const {title, description} = req.body;
-    const newSection = new Section({
-      title: title,
-      description: description,
-      user: getUsername(req, res)
-    })
-    newSection.save();
-    return res.status(200).json({"message": "User Saved."})
+    if(checkIfAuthenticated(req, res) === true){
+      const {title, description} = req.body;
+      const newSection = new Section({
+        title: title,
+        description: description,
+        user: getUsername(req, res)
+      })
+      newSection.save();
+      return res.status(200).json(newSection)
+    }else{
+      return res.status(202).json({"message": "Not authenticated"})
+    }
   }catch{
     return res.status(500).json({"message": "Error"})
   }

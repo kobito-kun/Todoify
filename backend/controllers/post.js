@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getUsername } from '../utils/utils.js';
+import { getUsername, checkIfAuthenticated } from '../utils/utils.js';
 import Post from '../models/post.models.js';
 const router = express.Router();
 
@@ -28,15 +28,19 @@ export const getPostRoute = async (req, res) => {
 
 export const createPostRoute = async (req, res) => {
   try{
-    const {title, description, section} = req.body;
-    const newPost = new Post({
-      title: title,
-      description: description,
-      section: section,
-      user: getUsername(req, res)
-    });
-    newPost.save();
-    return res.status(200).json({"message": "success"});
+    if(checkIfAuthenticated === true){
+      const {title, description, section} = req.body;
+      const newPost = new Post({
+        title: title,
+        description: description,
+        section: section,
+        user: getUsername(req, res)
+      });
+      newPost.save();
+      return res.status(200).json({"message": "success"});
+    }else{
+      res.status(202).json({"message": "Not authenticated"})
+    }
   }catch{
     return res.status(500).json({"message": "Error"})
   }
@@ -44,14 +48,18 @@ export const createPostRoute = async (req, res) => {
 
 export const updatePostRoute = async (req, res) => {
   try{
-    const {_id, title, description, section} = req.body;
-    Post.findOne({_id: _id}, (err, result) => {
-      result.title = title || result.title;
-      result.description = description || result.description;
-      result.section = section || result.section;
-      result.save();
-      return res.status(200).json({"message": "success"});
-    })
+    if(checkIfAuthenticated === true){
+      const {_id, title, description, section} = req.body;
+      Post.findOne({_id: _id}, (err, result) => {
+        result.title = title || result.title;
+        result.description = description || result.description;
+        result.section = section || result.section;
+        result.save();
+        return res.status(200).json({"message": "success"});
+      })
+    }else{
+      res.status(202).json({"message": "Not authenticated"})
+    }
   }catch{
     return res.status(500).json({"message": "Error"})
   }
