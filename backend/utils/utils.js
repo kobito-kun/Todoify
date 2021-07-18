@@ -1,10 +1,11 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 dotenv.config();
+
 const secretToken = process.env.JWT_TOKEN;
 
-const authenticate = async (req, res) => {
+export const getUsername = async (req, res) => {
   try{
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
@@ -18,10 +19,7 @@ const authenticate = async (req, res) => {
       if(err) toReturn = {
         "authenticated": false
       };
-
-      user.authenticated = true;
-      toReturn = user;
-
+      toReturn = user.username;
     })
 
     return toReturn;
@@ -31,9 +29,3 @@ const authenticate = async (req, res) => {
     }
   }
 }
-
-export const generateAccessToken = (username) => {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '10 years' });
-}
-
-export default authenticate;
