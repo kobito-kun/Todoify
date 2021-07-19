@@ -28,7 +28,7 @@ export const getPostRoute = async (req, res) => {
 
 export const createPostRoute = async (req, res) => {
   try{
-    if(checkIfAuthenticated === true){
+    if(checkIfAuthenticated(req, res)){
       const {title, description, section} = req.body;
       const newPost = new Post({
         title: title,
@@ -48,7 +48,7 @@ export const createPostRoute = async (req, res) => {
 
 export const updatePostRoute = async (req, res) => {
   try{
-    if(checkIfAuthenticated === true){
+    if(checkIfAuthenticated(req, res)){
       const {_id, title, description, section} = req.body;
       Post.findOne({_id: _id}, (err, result) => {
         result.title = title || result.title;

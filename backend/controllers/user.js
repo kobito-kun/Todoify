@@ -10,7 +10,7 @@ const router = express.Router();
 
 export const profileRoute = async (req, res) => {
   try{
-    if(checkIfAuthenticated === true){
+    if(checkIfAuthenticated(req, res)){
       User.findOne({username: getUsername(req, res)}, (err, user) => {
         res.status(200).json(user);
       })
@@ -24,7 +24,7 @@ export const profileRoute = async (req, res) => {
 
 export const updateProfileRoute = async (req, res) => {
   try{
-    if(checkIfAuthenticated === true){
+    if(checkIfAuthenticated(req, res)){
       const {email, password} = req.body;
       User.findOne({username: getUsername(req, res)}, (err, user) => {
         user.email = email || user.email;
@@ -42,7 +42,7 @@ export const updateProfileRoute = async (req, res) => {
 
 export const deleteProfileRoute = async (req, res) => {
   try{
-    if(checkIfAuthenticated === true){
+    if(checkIfAuthenticated(req, res)){
       const username = getUsername(req, res);
       await User.deleteOne({username: username});
       await Post.deleteMany({user: username});

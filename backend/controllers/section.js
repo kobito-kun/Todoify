@@ -28,7 +28,7 @@ export const getSectionRoute = async (req, res) => {
 
 export const createSectionRoute = async (req, res) => {
   try{
-    if(checkIfAuthenticated(req, res) === true){
+    if(checkIfAuthenticated(req, res)){
       const {title, description} = req.body;
       const newSection = new Section({
         title: title,
