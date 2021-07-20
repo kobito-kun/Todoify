@@ -46,6 +46,22 @@ export const createPostRoute = async (req, res) => {
   }
 }
 
+export const deletePostRoute = async (req, res) => {
+  try{
+    if(checkIfAuthenticated(req, res)){
+      const {_id} = req.params;
+      Post.deleteOne({_id: _id}, (err) => {
+        if(err) return res.status(202).json({"message": "failed"});
+        return res.status(200).json({"message": "success"});
+      })
+    }else{
+      return res.status(202).json({"message": "Not authenticated"});
+    }
+  }catch{
+    return res.status(500).json({"message": "Error"})
+  }
+}
+
 export const updatePostRoute = async (req, res) => {
   try{
     if(checkIfAuthenticated(req, res)){
