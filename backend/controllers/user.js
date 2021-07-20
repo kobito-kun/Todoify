@@ -61,13 +61,17 @@ export const loginRoute = async (req, res) => {
   try{
     const { username, password } = req.body;
     User.findOne({username: username}, (err, result) => {
-      if(password === result.password){
-        const token = generateAccessToken({username: username});
-        return res.status(200).json({
-          "message": "Authenticated",
-          "token": token,
-          "username": username,
-        })
+      if(result !== null){
+        if(password === result.password){
+          const token = generateAccessToken({username: username});
+          return res.status(200).json({
+            "message": "Authenticated",
+            "token": token,
+            "username": username,
+          })
+        }else{
+          return res.status(200).json({"message": "Incorrect Credentials."})
+        }
       }else{
         return res.status(200).json({"message": "Incorrect Credentials."})
       }

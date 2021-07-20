@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // Routes
 app.get("/", (req, res) => {
-  Section.find({}, (err, result) => {
+  Post.find({}, (err, result) => {
     res.json(result);
   })
 })
